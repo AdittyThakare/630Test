@@ -1,0 +1,150 @@
+{
+  "asyncapi" : "2.1.0",
+  "info" : {
+    "version" : "9",
+    "title" : "HTTPChannel",
+    "x-channel-name" : "/Channels/HTTP",
+    "x-channel-properties" : {
+      "be.http.maxKeepAliveRequests" : "-1",
+      "be.http.maxSavePostSize" : "4096",
+      "be.http.maxSpareThreads" : "50",
+      "be.http.maxPostSize" : "2097152",
+      "be.http.maxHttpHeaderSize" : "4096",
+      "be.http.connectorInstances" : "1",
+      "be.http.debug" : "false",
+      "be.http.compressableMimeType" : "text/html,text/xml,text/plain",
+      "be.http.compression" : "off",
+      "be.http.sessionTimeout" : "1800",
+      "be.http.connectionLinger" : "-1",
+      "be.http.acceptCount" : "-1",
+      "be.http.minSpareThreads" : "4",
+      "be.http.connectionTimeout" : "60000",
+      "be.http.maxProcessors" : "-1",
+      "be.http.enableDNSLookups" : "false",
+      "be.http.tcpNoDelay" : "true",
+      "be.http.connectorType" : "NIO",
+      "be.http.socketBufferSize" : "9000",
+      "be.http.useBodyEncodingForURI" : "false"
+    }
+  },
+  "channels" : {
+    "/Channels/HTTP/PostEmpl" : {
+      "subscribe" : {
+        "operationId" : "Channels_HTTP_PostEmpl",
+        "x-default-event" : "/Events/PostEmpl",
+        "bindings" : {
+          "http" : {
+            "type" : "request",
+            "method" : "GET,POST,PUT,DELETE",
+            "query" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "Zip" : {
+                    "type" : "integer",
+                    "format" : "int32"
+                  },
+                  "CompanyName" : {
+                    "type" : "string"
+                  },
+                  "Address" : {
+                    "type" : "string"
+                  },
+                  "State" : {
+                    "type" : "string"
+                  },
+                  "City" : {
+                    "type" : "string"
+                  },
+                  "EmplID" : {
+                    "type" : "integer",
+                    "format" : "int32"
+                  },
+                  "EmployeeName" : {
+                    "type" : "string"
+                  }
+                },
+                "x-entityname" : "PostEmpl"
+              } ]
+            }
+          }
+        },
+        "message" : {
+          "$ref" : "#/components/messages/PostEmpl"
+        },
+        "x-dest-properties" : {
+          "serializer-deserializer-class" : "com.tibco.cep.driver.http.serializer.RESTMessageSerializer",
+          "be.http.type" : "DEFAULT"
+        }
+      }
+    },
+    "/Channels/HTTP/GetEmplInfo" : {
+      "subscribe" : {
+        "operationId" : "Channels_HTTP_GetEmplInfo",
+        "x-default-event" : "/Events/GetEmplInfo",
+        "bindings" : {
+          "http" : {
+            "type" : "request",
+            "method" : "GET,POST,PUT,DELETE",
+            "query" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "EmplID" : {
+                    "type" : "integer",
+                    "format" : "int32"
+                  }
+                },
+                "x-entityname" : "GetEmplInfo"
+              } ]
+            }
+          }
+        },
+        "message" : {
+          "$ref" : "#/components/messages/GetEmplInfo"
+        },
+        "x-dest-properties" : {
+          "serializer-deserializer-class" : "com.tibco.cep.driver.http.serializer.RESTMessageSerializer",
+          "be.http.type" : "DEFAULT"
+        }
+      }
+    }
+  },
+  "servers" : {
+    "default" : {
+      "url" : "http://localhost:8110",
+      "protocol" : "HTTP",
+      "x-sharedResource-properties" : {
+        "host" : "localhost",
+        "port" : "8110",
+        "useSsl" : "false",
+        "address" : "http://localhost:8110",
+        "sharedResourceName" : "/SharedResources/HTTPConnection.sharedhttp"
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "PostEmpl" : {
+        "type" : "object"
+      },
+      "GetEmplInfo" : {
+        "type" : "object"
+      }
+    },
+    "messages" : {
+      "PostEmpl" : {
+        "payload" : {
+          "$ref" : "#/components/schemas/PostEmpl"
+        },
+        "contentType" : "application/xml"
+      },
+      "GetEmplInfo" : {
+        "payload" : {
+          "$ref" : "#/components/schemas/GetEmplInfo"
+        },
+        "contentType" : "application/xml"
+      }
+    }
+  }
+}
